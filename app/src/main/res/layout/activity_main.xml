@@ -42,7 +42,7 @@
         android:layout_alignLeft="@id/tv_time"/>
     <TextView
         android:id="@+id/tv_temperature"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="3°"
         android:textColor="#ffffff"
