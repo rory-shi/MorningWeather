@@ -2,74 +2,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <ImageButton
-        android:id="@+id/img_blur"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/blur_bg"/>
-    <ImageButton
-        android:id="@+id/img_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bg"/>
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:text="21:44"
-        android:textColor="#ffffff"
-        android:textSize="20sp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="40dp"/>
-    <TextView
-        android:id="@+id/tv_date"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:text="一月3"
-        android:textColor="#ffffff"
-        android:textSize="25sp"
-        android:layout_below="@id/tv_time"
-        android:layout_alignLeft="@id/tv_time"
-        />
-    <TextView
-        android:id="@+id/tv_weather"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
-        android:text="CHANCE OF RAIN"
-        android:textColor="#ffffff"
-        android:textSize="25sp"
-        android:layout_below="@id/tv_date"
-        android:layout_alignLeft="@id/tv_time"/>
-    <TextView
-        android:id="@+id/tv_temperature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="3°"
-        android:textColor="#ffffff"
-        android:textSize="65sp"
-        android:layout_below="@id/tv_weather"
-        android:layout_alignLeft="@id/tv_time"
-        android:layout_marginTop="16dp"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-
-    <TextView
-        android:id="@+id/tv_location_big"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Zhejiang"
-        android:textSize="25sp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
-        android:textColor="#ffffff"/>
-    <TextView
-        android:id="@+id/tv_location_small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hangzhou"
-        android:textSize="25sp"
-        android:textColor="#ffffff"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/tv_location_big"/>
-
+    </android.support.v4.view.ViewPager>
 </RelativeLayout>

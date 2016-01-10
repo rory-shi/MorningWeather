@@ -74,6 +74,7 @@ public class MyLocationListener implements BDLocationListener {
             }
         }
         Log.i("BaiduLocationApiDem", sb.toString());
+
     }
 
 }
