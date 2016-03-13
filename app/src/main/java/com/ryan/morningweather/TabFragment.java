@@ -1,5 +1,7 @@
 package com.ryan.morningweather;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -25,6 +28,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -32,19 +36,21 @@ import java.util.Date;
  */
 public class TabFragment extends Fragment {
 
-    ImageButton imgBtn;
-    TextView timeTv;
-    TextView dateTv;
-    TextView weatherTv;
-    TextView temperatureTv;
-    TextView provinceTv;
-    TextView cityTv;
+    private ImageButton imgBtn;
+    private TextView timeTv;
+    private TextView dateTv;
+    private TextView weatherTv;
+    private TextView temperatureTv;
+    private TextView provinceTv;
+    private TextView cityTv;
+    private Button btnAddCity;
+    private String cityName;
+    public static final int REQUEST_CODE = 1;
+
 
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
 
-    public TabFragment(){
-    }
 
 
     @Nullable
@@ -52,6 +58,7 @@ public class TabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab,container,false);
         initView(view);
+
         initEvent();
         return view;
 
@@ -70,6 +77,7 @@ public class TabFragment extends Fragment {
                 String qlty = getQltyFromJson(response);
                 String weather = getWeatherFromJson(response);
                 String temperature = getTemperatureFromJson(response);
+
                 SharedPreferences.Editor editor =
                         PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
                 editor.putString("weather_data", response.toString());
@@ -105,6 +113,8 @@ public class TabFragment extends Fragment {
         temperatureTv.setText(temperature + " °");
         dateTv.setText(date);
         timeTv.setText(time);
+        cityTv.setText(cityName);
+        provinceTv.setText("China");
 
         setDefaultBackground(weather);
     }
@@ -134,13 +144,14 @@ public class TabFragment extends Fragment {
     }
 
     private void sendRequestWithHttpClient(final HttpCallbackListener listener) {
+        cityName = getArguments().getString("cityName");
         new Thread(new Runnable() {
             @Override
             public void run() {
                 initTime();
                 HttpURLConnection connection = null;
                 try {
-                    URL url = new URL("http://apis.baidu.com/heweather/weather/free?" + "city=" + "hangzhou");
+                    URL url = new URL("http://apis.baidu.com/heweather/weather/free?" + "city=" + cityName);
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
                     connection.setRequestProperty("apikey","832d7ef40bf399309c9946d515867e80");
@@ -193,6 +204,19 @@ public class TabFragment extends Fragment {
             JSONObject objectData = jsonArray.getJSONObject(0);
             JSONObject now = objectData.getJSONObject("now");
             return now.getString("tmp");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.toString();
+        }
+    }
+
+    private String getCityNameFromJson(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather data service 3.0");
+            JSONObject objectData = jsonArray.getJSONObject(0);
+            JSONObject now = objectData.getJSONObject("basic");
+            return now.getString("city");
         } catch (Exception e) {
             e.printStackTrace();
             return e.toString();
@@ -263,6 +287,7 @@ public class TabFragment extends Fragment {
         temperatureTv = (TextView) view.findViewById(R.id.tv_temperature);
         provinceTv = (TextView) view.findViewById(R.id.tv_location_big);
         cityTv = (TextView) view.findViewById(R.id.tv_location_small);
+        btnAddCity = (Button) view.findViewById(R.id.btn_add_city);
     }
 
     private void initBackground() {
@@ -289,6 +314,13 @@ public class TabFragment extends Fragment {
                         break;
                 }
                 return true;
+            }
+        });
+        btnAddCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),AddCityActivity.class);
+                startActivity(intent);
             }
         });
     }
